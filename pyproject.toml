@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "mastodon-lists-manager"
+version = "0.1.0"
+description = ""
+authors = ["Huey <hello@huey.xyz>"]
+readme = "README.md"
+packages = [{include = "mastodon_lists_manager"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+mastodon-py = "^1.6.3"
+
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^0.991"
+black = "^22.10.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
