@@ -9,11 +9,14 @@ packages = [{include = "mastodon_lists_manager"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 mastodon-py = "^1.6.3"
+pysondb = "^1.6.7"
+typer = "^0.7.0"
 
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^0.991"
 black = "^22.10.0"
+python-dotenv = "^0.21.0"
 
 [build-system]
 requires = ["poetry-core"]
