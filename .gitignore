@@ -1,5 +1,1 @@
-/.venv
 /.env
-__pycache__
-db.json
-db.json.lock
