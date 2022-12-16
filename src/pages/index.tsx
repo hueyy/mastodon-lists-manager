@@ -1,9 +1,18 @@
 import * as React from "react"
 import type { HeadFC, PageProps } from "gatsby"
+import PrimaryButton from "../components/PrimaryButton"
 
 const IndexPage: React.FC<PageProps> = () => {
+  React.useEffect(() => {
+    (async () => {
+    })()
+    
+  }, [])
   return (
-    <main>Hello World!</main>
+    <main>
+      <h1>Hello World!</h1>
+      <PrimaryButton href="/set_instance">START</PrimaryButton>
+    </main>
   )
 }
 

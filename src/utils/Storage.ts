@@ -1,7 +1,9 @@
 import store from 'store2'
 
-const User = store.namespace('user')
+const User = store.namespace(`user`)
 
-export default {
+const Storage = {
   User,
 }
+
+export default Storage

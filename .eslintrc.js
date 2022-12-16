@@ -5,17 +5,10 @@ module.exports = {
     `plugin:import/errors`,
     `plugin:import/warnings`,
     `plugin:import/typescript`,
-    `plugin:markdown/recommended`,
   ],
   globals: {
     __PATH_PREFIX__: true,
   },
-  overrides: [
-    {
-      files: [`**/*.md`],
-      processor: `markdown/markdown`,
-    },
-  ],
   parser: `@typescript-eslint/parser`,
   plugins: [
     `@typescript-eslint`,
@@ -23,7 +16,6 @@ module.exports = {
     `sort-keys-fix`,
     `import`,
   ],
-  processor: `disable/disable`,
   root: true,
   rules: {
     "@typescript-eslint/no-redeclare": [`error`],

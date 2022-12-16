@@ -8,9 +8,9 @@ type Props = {
 }
 
 const TextInput: React.FC<Props> = ({
-  className = "",
-  placeholder = "",
-  value = "",
+  className = ``,
+  placeholder = ``,
+  value = ``,
   onChange = () => {},
 }) => {
   const on_change = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
