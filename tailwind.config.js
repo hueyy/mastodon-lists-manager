@@ -6,6 +6,10 @@ module.exports = {
   ],
   theme: {
     extend: {},
+    fontFamily: {
+      sans: ["Fira Sans", "sans-serif"],
+      heading: ["Fira Sans Condensed", "sans-serif"]
+    }
   },
   plugins: [],
 }
