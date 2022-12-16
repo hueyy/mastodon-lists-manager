@@ -55,10 +55,6 @@ const getLists = async (apiURL: string, accessToken: string): Promise<List[]>=> 
   return m.lists.fetchAll()
 }
 
-const getSelf = async () => {
-
-}
-
 const Mastodon = {
   codeToAccessToken,
   createApp,

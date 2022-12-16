@@ -6,9 +6,6 @@ const config: GatsbyConfig = {
     `gatsby-plugin-image`,
     `gatsby-plugin-postcss`,
     `gatsby-plugin-sitemap`,
-    {
-      resolve: `gatsby-plugin-manifest`,
-    },
     `gatsby-transformer-remark`,
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
@@ -22,7 +19,7 @@ const config: GatsbyConfig = {
     },
   ],
   siteMetadata: {
-    siteUrl: `https://www.yourdomain.tld`,
+    siteUrl: process.env.HOST,
     title: `Mastodon Lists Manager`,
   },
 }

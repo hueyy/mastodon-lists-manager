@@ -5,6 +5,7 @@ import { isValidString, makeAPIURL } from "../utils/Utils"
 import { login } from "masto"
 import type { Account, MastoClient, List } from "masto"
 import SecondaryButton from "../components/SecondaryButton"
+import AccountCard from "../components/AccountCard"
 
 const toArray = async <T,>(asyncIterator: AsyncIterable<T[]>): Promise<T[]> => { 
     let array: T[] = [] 
@@ -84,7 +85,7 @@ const ListsManage = () => {
   }, [lists, followers])
   
   return (
-    <main>
+    <main className="max-w-screen-md mx-auto py-4">
       <h1>Lists Manager</h1>
 
       <SecondaryButton>Re-fetch data</SecondaryButton>
@@ -92,15 +93,22 @@ const ListsManage = () => {
       <h2 className="mt-4">
         Accounts you follow that are not in any list ({unlistedAccounts.length})
       </h2>
-      <ul className="list-disc list-inside">
+      <div className="p-4 flex flex-col gap-6">
         {
           unlistedAccounts.map(account => {
             return (
-              <li>{account.displayName}  /  <a href={account.url} className="text-blue-700">@{account.acct}</a></li>
+              <div className="flex justify-between items-start gap-4" key={account.id}>
+                <AccountCard account={account} />
+                <div>
+                  <select>
+                    
+                  </select>
+                </div>
+              </div>
             )
           })
         }
-      </ul>
+      </div>
     </main>
   )
 }
