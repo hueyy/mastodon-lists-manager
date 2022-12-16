@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { navigate } from "gatsby"
 import Storage from "../utils/Storage"
-import { isValidString } from "../utils/Utils"
+import { isValidString, makeAPIURL } from "../utils/Utils"
 import Mastodon from '../utils/Mastodon'
 
 const OAuth = () => {
@@ -18,15 +18,27 @@ const OAuth = () => {
       navigate(`/client_details`)
       return
     }
+
+    const apiURL = makeAPIURL(homeInstance)
    
     if(window.location.search.length > 0){
       const queryParams = new URLSearchParams(window.location.search)
-      const code = queryParams.get(`code`)
-      if(isValidString(code as string)){
-        navigate(`/lists_manage`)
+      const code = queryParams.get(`code`) as string
+      if(isValidString(code)){
+        (async () => {
+          try {
+            const { access_token: accessToken } = await Mastodon.codeToAccessToken(apiURL, clientID, clientSecret, code)
+            Storage.User.set(`access_token`, accessToken)
+            navigate(`/lists_manage`)
+          } catch (error){
+            console.error(`Could not exchange code for access token: `, error)
+          }
+        })()
+      } else {
+        console.error(`Invalid OAuth code`)
       }
     } else {
-      const OAuthURL = Mastodon.makeOAuthURL(`https://${homeInstance}`, clientID)
+      const OAuthURL = Mastodon.makeOAuthURL(apiURL, clientID)
       window.location.href = OAuthURL
     }
   })

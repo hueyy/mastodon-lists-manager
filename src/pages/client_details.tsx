@@ -4,9 +4,7 @@ import type { HeadFC } from "gatsby"
 import TextField from "../components/TextField"
 import Mastodon from "../utils/Mastodon"
 import Storage from "../utils/Storage"
-import { isValidString } from "../utils/Utils"
-
-
+import { isValidString, makeAPIURL } from "../utils/Utils"
 
 const ClientDetailsPage = () => {
   const [client_id, set_client_id] = React.useState(``)
@@ -30,7 +28,7 @@ const ClientDetailsPage = () => {
     } else {
       (async () => {
         try {
-          const app = await Mastodon.createApp(`https://${homeInstance}`)
+          const app = await Mastodon.createApp(makeAPIURL(homeInstance))
           Storage.User.set(`client_id`, app.clientId)
           Storage.User.set(`client_secret`, app.clientSecret)
           Storage.User.set(`vapid_key`, app.vapidKey)
