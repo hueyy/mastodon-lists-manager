@@ -19,7 +19,7 @@ const config: GatsbyConfig = {
     },
   ],
   siteMetadata: {
-    siteUrl: process.env.HOST,
+    siteUrl: `https://mastodon-lists-manager.huey.xyz`,
     title: `Mastodon Lists Manager`,
   },
 }
