@@ -1,9 +1,10 @@
 import * as React from "react"
 import { HeadFC, PageProps } from "gatsby"
+import Container from "../components/Container"
 
 const NotFoundPage: React.FC<PageProps> = () => {
   return (
-    <main>404</main>
+    <Container>404</Container>
   )
 }
 

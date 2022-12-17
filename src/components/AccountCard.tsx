@@ -22,7 +22,6 @@ const AccountCard: React.FC<Props> = ({
         <p><strong>{account.displayName}</strong></p>
         <a
           href={account.url}
-          className="text-blue-700"
           target="_blank" rel="noreferrer"
         >@{account.acct}</a>
         {/* TODO: mitigate XSS risk */}

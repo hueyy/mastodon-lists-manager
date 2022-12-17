@@ -5,6 +5,7 @@ import TextField from "../components/TextField"
 import Mastodon from "../utils/Mastodon"
 import Storage from "../utils/Storage"
 import { isValidString, makeAPIURL } from "../utils/Utils"
+import Container from "../components/Container"
 
 const ClientDetailsPage = () => {
   const [client_id, set_client_id] = React.useState(``)
@@ -42,7 +43,8 @@ const ClientDetailsPage = () => {
   }, [])
 
   return (
-    <main>
+    <Container>
+      <p>Obtaining client ID and client secret...</p>
       <div>
         <TextField
           label="client_id"
@@ -56,7 +58,7 @@ const ClientDetailsPage = () => {
           onChange={on_change_client_secret}
         />
       </div>
-    </main>
+    </Container>
   )
 }
 

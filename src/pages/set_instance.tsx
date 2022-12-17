@@ -4,6 +4,7 @@ import TextInput from '../components/TextInput'
 import PrimaryButton from "../components/PrimaryButton"
 import Storage from '../utils/Storage'
 import { isValidString } from "../utils/Utils"
+import Container from "../components/Container"
 
 const clean_home_instance_input = (input_str: string) => {
   const str = /^https?:\/\//.test(input_str)
@@ -33,7 +34,7 @@ const SetInstancePage: React.FC<PageProps> = () => {
   }, [])
 
   return (
-    <main>
+    <Container>
       <p>
         What's your home Mastodon instance?
       </p>
@@ -45,7 +46,7 @@ const SetInstancePage: React.FC<PageProps> = () => {
       />
       
       <PrimaryButton onClick={save_home_instance}>SAVE</PrimaryButton>
-    </main>
+    </Container>
   )
 }
 

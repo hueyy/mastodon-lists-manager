@@ -3,6 +3,7 @@ import { navigate } from "gatsby"
 import Storage from "../utils/Storage"
 import { isValidString, makeAPIURL } from "../utils/Utils"
 import Mastodon from '../utils/Mastodon'
+import Container from '../components/Container'
 
 const OAuth = () => {
   React.useEffect(() => {
@@ -44,9 +45,9 @@ const OAuth = () => {
   })
 
   return (
-    <main>
-      OAuth
-    </main>
+    <Container>
+      OAuth: obtaining access token
+    </Container>
   )
 }
 

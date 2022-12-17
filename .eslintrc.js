@@ -5,6 +5,7 @@ module.exports = {
     `plugin:import/errors`,
     `plugin:import/warnings`,
     `plugin:import/typescript`,
+    `plugin:react-hooks/recommended`,
   ],
   globals: {
     __PATH_PREFIX__: true,
@@ -15,6 +16,7 @@ module.exports = {
     `sonarjs`,
     `sort-keys-fix`,
     `import`,
+    `react-hooks`,
   ],
   root: true,
   rules: {

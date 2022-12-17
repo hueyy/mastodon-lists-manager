@@ -50,14 +50,27 @@ const codeToAccessToken = async (apiURL: string, clientId: string, clientSecret:
   return await tokenResponse.json()
 }
 
+const getClient = async (apiURL: string, accessToken: string) => {
+  return await login({ accessToken, url: apiURL })
+}
+
 const getLists = async (apiURL: string, accessToken: string): Promise<List[]>=> {
-  const m = await login({ accessToken, url: apiURL })
-  return m.lists.fetchAll()
+  return (await getClient(apiURL, accessToken)).lists.fetchAll()
+}
+
+const createList = async (apiURL: string, accessToken: string, title: string) => {
+  return (await getClient(apiURL, accessToken)).lists.create({ title })
+}
+
+const addToList = async (apiURL: string, accessToken: string, listId: string, accountIDs: string[]) => {
+  return (await getClient(apiURL, accessToken)).lists.addAccount(listId, { accountIds: accountIDs})
 }
 
 const Mastodon = {
+  addToList,
   codeToAccessToken,
   createApp,
+  createList,
   getLists,
   makeOAuthURL,
 }
