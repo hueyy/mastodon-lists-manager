@@ -1,6 +1,7 @@
 import * as React from "react"
 import type { HeadFC, PageProps } from "gatsby"
 import PrimaryButton from "../components/PrimaryButton"
+import Container from "../components/Container"
 
 const IndexPage: React.FC<PageProps> = () => {
   React.useEffect(() => {
@@ -9,10 +10,10 @@ const IndexPage: React.FC<PageProps> = () => {
     
   }, [])
   return (
-    <main>
+    <Container>
       <h1>Mastodon Lists Manager</h1>
       <PrimaryButton href="/set_instance">START</PrimaryButton>
-    </main>
+    </Container>
   )
 }
 
