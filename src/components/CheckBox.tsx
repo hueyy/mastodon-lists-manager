@@ -3,13 +3,13 @@ import * as React from "react"
 type Props = {
   className?: string,
   checked: boolean,
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void,
 }
 
 const CheckBox: React.FC<Props> = ({
   className,
   checked,
-  onChange,
+  onChange = () => {},
 }) => {
   return (
     <input

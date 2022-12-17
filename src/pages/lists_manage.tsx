@@ -8,6 +8,7 @@ import { useReactTable, flexRender, createColumnHelper, getCoreRowModel } from "
 import SecondaryButton from "../components/SecondaryButton"
 import AccountCard from "../components/AccountCard"
 import CheckBox from "../components/CheckBox"
+import PrimaryButton from "../components/PrimaryButton"
 
 const toArray = async <T,>(asyncIterator: AsyncIterable<T[]>): Promise<T[]> => { 
   let array: T[] = [] 
@@ -53,6 +54,7 @@ interface ListWithAccount extends List {
 const ListsManage = () => {
   const [lists, setLists] = React.useState(Storage.User.get(`lists`, []) as ListWithAccount[])
   const [followers, setFollowers] = React.useState(Storage.User.get(`followers`, []) as Account[])
+  const [selectedLists, setSelectedLists] = React.useState([] as string[])
 
   const getLists = React.useCallback(async (m: MastoClient) => {
     const listData = await m.lists.fetchAll()
@@ -127,16 +129,41 @@ const ListsManage = () => {
   })
   
   return (
-    <main className="max-w-screen-md mx-auto py-4">
+    <main className="max-w-screen-md h-screen mx-auto py-4">
       <h1>Lists Manager</h1>
 
       <SecondaryButton>Re-fetch data</SecondaryButton>
 
       <h2 className="mt-4">
-        Accounts you follow that are not in any list ({unlistedAccounts.length})
+        Accounts you follow that are not in any list ({unlistedAccounts.length}):
       </h2>
 
-      <table>
+      <div className="my-4 p-4 bg-neutral-100">
+        <small className="font-bold">ACTIONS</small>
+        <div className="mt-2">
+          <p>Add to:</p>
+          <div className="grid gap-4 grid-flow-col auto-cols-max">
+            {lists.map(list => {
+              const onChange = () => selectedLists.includes(list.id)
+                  ? setSelectedLists(selectedLists.filter(l => l !== list.id))
+                  : setSelectedLists([...selectedLists, list.id])
+              return (
+                <div className="flex gap-2 cursor-pointer" onClick={onChange}>
+                  <label className="cursor-pointer">{list.title}</label>
+                  <CheckBox
+                    checked={selectedLists.includes(list.id)}
+                  />
+                </div>
+              )
+            })}
+          </div>
+          <PrimaryButton className="mt-2">
+            EXECUTE
+          </PrimaryButton>
+        </div>
+      </div>
+
+      <table className="block overflow-scroll h-full">
         <thead>
           {
             tableInstance.getHeaderGroups().map(headerGroup => (
