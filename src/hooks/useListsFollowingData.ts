@@ -76,6 +76,12 @@ const useListsFollowingData = () => {
     Storage.User.set(`lists`, newLists)
   }, [lists, following])
 
+  const removeFromFollowing = React.useCallback((accountIDs: string[]) => {
+    setFollowing(following => {
+      return following.filter(f => !accountIDs.includes(f.id))
+    })
+  }, [])
+
   return {
     addToList,
     fetchData,
@@ -84,6 +90,7 @@ const useListsFollowingData = () => {
     isFetching,
     lastUpdated,
     lists,
+    removeFromFollowing,
   }
 }
 

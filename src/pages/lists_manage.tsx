@@ -13,8 +13,9 @@ import Container from "../components/Container"
 const ListsManage = () => {
   const [rowSelection, setRowSelection] = React.useState({})
   const [selectedLists, setSelectedLists] = React.useState([] as string[])
-  const { lists, following, fetchData, isFetching, getLists, addToList, lastUpdated } = useListsFollowingData()
+  const { lists, following, fetchData, isFetching, getLists, addToList, lastUpdated, removeFromFollowing } = useListsFollowingData()
   const { apiURL, accessToken } = getRequestEssentials()
+  const [unfollowAction, setUnfollowAction] = React.useState(false)
 
   const onRedirectDone = React.useCallback(() => {
     if(lists.length === 0 || following.length === 0){
@@ -34,20 +35,35 @@ const ListsManage = () => {
   const [isExecuting, setIsExecuting] = React.useState(false)
 
   const onClickExecute = React.useCallback(() => {
+    if(Object.values(rowSelection).length === 0){
+      return
+    }
+
     const accountIds = Object.entries(rowSelection).filter(([_, value]) => value === true).map(([key]) => {
       return unlistedAccounts[Number.parseInt(key)].id
     })
     setIsExecuting(true)
-    Promise.all(selectedLists.map(listID => Mastodon.addToList(apiURL, accessToken, listID, accountIds)))
-      .catch(error => {
-        console.error(error)
-        window.alert(`Failed to execute!`)
-      })
-    addToList(selectedLists, accountIds)
-    setSelectedLists([])
+
+    if(unfollowAction){
+      Promise.all(accountIds.map(id => {
+        return Mastodon.unfollow(apiURL, accessToken, id)
+      }))
+      removeFromFollowing(accountIds)
+      setUnfollowAction(false)
+    } else if(selectedLists.length > 0) {
+      Promise.all(selectedLists.map(listID => Mastodon.addToList(apiURL, accessToken, listID, accountIds)))
+        .catch(error => {
+          console.error(error)
+          window.alert(`Failed to execute!`)
+        })
+      addToList(selectedLists, accountIds)
+      setSelectedLists([])
+    }
+    
     setRowSelection({})
     setIsExecuting(false)
-  }, [rowSelection, selectedLists, apiURL, accessToken, unlistedAccounts, addToList])
+    
+  }, [rowSelection, selectedLists, apiURL, accessToken, unlistedAccounts, addToList, unfollowAction, removeFromFollowing])
   
   const onCreateList = React.useCallback(async () => {
     const answer = window.prompt(`What do you want to name your new list`)
@@ -56,6 +72,11 @@ const ListsManage = () => {
       getLists(apiURL, accessToken)
     }
   }, [getLists, apiURL, accessToken])
+
+  const onClickUnfollow = React.useCallback(() => {
+    setSelectedLists([])
+    setUnfollowAction(val => !val)
+  }, [])
   
   return (
     <Container>
@@ -72,19 +93,25 @@ const ListsManage = () => {
           <p>Add to:</p>
           <div className="grid grid-cols-4">
             {lists.map(list => {
-              const onChange = () => selectedLists.includes(list.id)
-                  ? setSelectedLists(selectedLists.filter(l => l !== list.id))
-                  : setSelectedLists([...selectedLists, list.id])
-              const href = `${apiURL}/lists/${list.id}`
+              const isSelected = selectedLists.includes(list.id)
+              const onChange = () => {
+                if(isSelected){
+                  setSelectedLists(selectedLists.filter(l => l !== list.id))
+                } else {
+                  setSelectedLists([...selectedLists, list.id])
+                }
+                setUnfollowAction(false)
+              }
+              // const href = `${apiURL}/lists/${list.id}`
+              const selectedClassName = isSelected ? `bg-violet-200` : `hover:bg-violet-100`
+              const className =`flex gap-2 cursor-pointer p-2 border border-solid border-neutral-400 ${selectedClassName}`
               return (
-                <div className="flex gap-2 cursor-pointer p-2" onClick={onChange} key={list.id}>
+                <div className={className} onClick={onChange} key={list.id}>
                   <label className="cursor-pointer">
-                    <a href={href} target="_blank" rel="noreferrer">
-                      {list.title}
-                    </a>
+                    {list.title}
                   </label>
                   <CheckBox
-                    checked={selectedLists.includes(list.id)}
+                    checked={isSelected}
                   />
                 </div>
               )
@@ -93,10 +120,17 @@ const ListsManage = () => {
               ➕ New List
             </SecondaryButton>
           </div>
-          <PrimaryButton className="mt-2" onClick={onClickExecute} isLoading={isExecuting} loadingText="EXECUTING...">
-            EXECUTE
-          </PrimaryButton>
+          
         </div>
+        <div className="mt-2" onClick={onClickUnfollow}>
+          <label className="mr-4 cursor-pointer">Unfollow</label>
+          <CheckBox
+            checked={unfollowAction}
+          />
+        </div>
+        <PrimaryButton className="mt-2" onClick={onClickExecute} isLoading={isExecuting} loadingText="EXECUTING...">
+          EXECUTE
+        </PrimaryButton>
       </div>
 
       {

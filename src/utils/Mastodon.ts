@@ -2,7 +2,7 @@ import { List, login } from 'masto'
 import type { Client } from 'masto'
 
 const REDIRECT_URL = `${process.env.HOST}/oauth`
-const SCOPES = `read:accounts read:follows read:lists write:lists` as const
+const SCOPES = `read:accounts read:follows read:lists write:lists write:follows` as const
 
 const createApp = async (apiURL: string): Promise<Client> => {
   const m = await login({ url: apiURL })
@@ -66,6 +66,10 @@ const addToList = async (apiURL: string, accessToken: string, listId: string, ac
   return (await getClient(apiURL, accessToken)).lists.addAccount(listId, { accountIds: accountIDs})
 }
 
+const unfollow = async (apiURL: string, accessToken: string, accountID: string) => {
+  return (await getClient(apiURL, accessToken)).accounts.unfollow(accountID)
+}
+
 const Mastodon = {
   addToList,
   codeToAccessToken,
@@ -73,6 +77,7 @@ const Mastodon = {
   createList,
   getLists,
   makeOAuthURL,
+  unfollow,
 }
 
 export default Mastodon

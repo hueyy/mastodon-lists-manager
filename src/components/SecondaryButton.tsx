@@ -14,13 +14,13 @@ const SecondaryButton: React.FC<Props> = ({
 }) => {
   if(href){
     return (
-      <Link to={href} className="px-4 bg-neutral-300 text-black">
+      <Link to={href} className="px-4 bg-violet-300 text-black">
         {children}
       </Link>
     )
   } else {
     return (
-      <button type="button" onClick={onClick} className="px-4 bg-neutral-300 text-black">
+      <button type="button" onClick={onClick} className="px-4 bg-violet-300 text-black">
         {children}
       </button>
     )
