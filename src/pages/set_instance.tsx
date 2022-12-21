@@ -35,7 +35,8 @@ const SetInstancePage: React.FC<PageProps> = () => {
       </p>
       
       <TextInput
-        placeholder="mastodon.social"
+        className="my-4"
+        placeholder="mastodon.sdf.org"
         value={homeInstance}
         onChange={onHomeInstanceChange}
         onEnter={saveHomeInstance}

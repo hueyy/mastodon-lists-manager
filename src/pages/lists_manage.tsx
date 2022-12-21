@@ -77,11 +77,19 @@ const ListsManage = () => {
     setSelectedLists([])
     setUnfollowAction(val => !val)
   }, [])
+
+  if (isFetching){
+    return (
+      <Container>
+        <p>Fetching data...</p>
+      </Container>
+    )
+  }
   
   return (
     <Container>
       <SecondaryButton onClick={fetchData}>Re-fetch data</SecondaryButton>
-      <small>Last updated: {lastUpdated === null ? `never` : lastUpdated?.toLocaleString()}</small>
+      <small className="ml-2">Last updated: {lastUpdated === null ? `never` : lastUpdated?.toLocaleString()}</small>
 
       <h2 className="mt-4">
         Accounts you follow that are not in any list ({unlistedAccounts.length}):
@@ -108,7 +116,7 @@ const ListsManage = () => {
               return (
                 <div className={className} onClick={onChange} key={list.id}>
                   <label className="cursor-pointer">
-                    {list.title}
+                    {list.title} ({list.accounts.length})
                   </label>
                   <CheckBox
                     checked={isSelected}
@@ -133,11 +141,6 @@ const ListsManage = () => {
         </PrimaryButton>
       </div>
 
-      {
-        isFetching
-          ? (<p>Fetching data...</p>)
-          : null
-      }
       <ListTable className="block overflow-scroll h-full" table={table} />
     </Container>
   )

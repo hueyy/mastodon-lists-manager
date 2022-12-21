@@ -18,7 +18,7 @@ const PrimaryButton: React.FC<Props> = ({
   isLoading = false,
   loadingText = ``,
 }) => {
-  const aggregateClassName= `px-4 bg-violet-500 text-white ${className}`
+  const aggregateClassName= `px-4 py-2 bg-violet-500 text-white ${className}`
   const content = isLoading ? loadingText: children
   if(href){
     return (

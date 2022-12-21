@@ -25,7 +25,7 @@ const AccountCard: React.FC<Props> = ({
           target="_blank" rel="noreferrer"
         >@{account.acct}</a>
         {/* TODO: mitigate XSS risk */}
-        <div className="mt-2 prose max-w-none prose-a:text-blue-700" dangerouslySetInnerHTML={{ __html: account.note}} />
+        <div className="mt-2 text-sm prose max-w-none prose-a:text-blue-700" dangerouslySetInnerHTML={{ __html: account.note}} />
       </div>
     </div>
   )
