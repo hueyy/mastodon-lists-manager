@@ -31,14 +31,22 @@ const ListsManage = () => {
     rowSelection,
   })
 
-  const onClickExecute = React.useCallback(async () => {
+  const [isExecuting, setIsExecuting] = React.useState(false)
+
+  const onClickExecute = React.useCallback(() => {
     const accountIds = Object.entries(rowSelection).filter(([_, value]) => value === true).map(([key]) => {
       return unlistedAccounts[Number.parseInt(key)].id
     })
-    await Promise.all(selectedLists.map(listID => Mastodon.addToList(apiURL, accessToken, listID, accountIds)))
+    setIsExecuting(true)
+    Promise.all(selectedLists.map(listID => Mastodon.addToList(apiURL, accessToken, listID, accountIds)))
+      .catch(error => {
+        console.error(error)
+        window.alert(`Failed to execute!`)
+      })
     addToList(selectedLists, accountIds)
     setSelectedLists([])
     setRowSelection({})
+    setIsExecuting(false)
   }, [rowSelection, selectedLists, apiURL, accessToken, unlistedAccounts, addToList])
   
   const onCreateList = React.useCallback(async () => {
@@ -85,7 +93,7 @@ const ListsManage = () => {
               ➕ New List
             </SecondaryButton>
           </div>
-          <PrimaryButton className="mt-2" onClick={onClickExecute}>
+          <PrimaryButton className="mt-2" onClick={onClickExecute} isLoading={isExecuting} loadingText="EXECUTING...">
             EXECUTE
           </PrimaryButton>
         </div>

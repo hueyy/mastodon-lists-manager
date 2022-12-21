@@ -20,11 +20,11 @@ const useListsFollowingData = () => {
   const [lists, setLists] = React.useState(Storage.User.get(`lists`, []) as ListWithAccount[])
   const [following, setFollowing] = React.useState(Storage.User.get(`following`, []) as Account[])
   const [isFetching, setIsFetching] = React.useState(false)
-  const [lastUpdated, setLastUpdated ] = React.useState<null | Date>(null)
+  const [lastUpdated, setLastUpdated ] = React.useState<null | Date>(Storage.User.get(`last_updated`, null))
 
   const getLists = React.useCallback(async (apiURL: string, accessToken: string) => {
     const m = await login({ accessToken, url: apiURL })
-    const listData = await m.lists.fetchAll()
+    const listData = (await m.lists.fetchAll()).sort((a, b) => a.title.localeCompare(b.title))
     const accounts = await Promise.all(listData.map(list => {
       return toArray(m.lists.iterateAccounts(list.id))
     }))
@@ -55,12 +55,15 @@ const useListsFollowingData = () => {
         getFollowing(apiURL, accessToken),
       ])
       setIsFetching(false)
-      setLastUpdated(new Date())
+
+      const lastUpdated = new Date()
+      setLastUpdated(lastUpdated)
+      Storage.User.set(`last_updated`, lastUpdated)
     })()
   }, [getLists, getFollowing])
 
   const addToList = React.useCallback((selectedLists: string[], accountIds: string[]) => {
-    setLists(lists.map(list => {
+    const newLists = lists.map(list => {
       if(selectedLists.includes(list.id)){
         return { ...list, accounts: [
           ...list.accounts,
@@ -68,7 +71,9 @@ const useListsFollowingData = () => {
         ] }
       }
       return list
-    }))
+    })
+    setLists(newLists)
+    Storage.User.set(`lists`, newLists)
   }, [lists, following])
 
   return {

@@ -17,7 +17,7 @@ const AccountCard: React.FC<Props> = ({
   }, [onClick])
   return (
     <div className={`flex gap-4 items-start cursor-pointer ${className}`} onClick={onClickCard}>
-      <img className="w-28 aspect-square" src={account.avatar} alt={account.displayName} />
+      <img className="w-28 aspect-square" src={account.avatar} alt={account.displayName} loading="lazy" />
       <div>
         <p><strong>{account.displayName}</strong></p>
         <a

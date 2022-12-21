@@ -1,11 +1,11 @@
-import * as React from "react"
 import { navigate } from "gatsby"
 import Storage from "../utils/Storage"
 import { isValidString } from "../utils/Utils"
+import useRunOnce from "./useRunOnce"
 
 const useRedirect = ({ done = () => {} } = {}) => {
   // eslint-disable-next-line sonarjs/cognitive-complexity
-  React.useEffect(() => {
+  useRunOnce(() => {
     const currentPath = window.location.pathname
     const homeInstance = Storage.User.get(`home_instance`)
     if(/\/set_instance\/?/.test(currentPath)){
@@ -49,7 +49,7 @@ const useRedirect = ({ done = () => {} } = {}) => {
         done()
       }
     }
-  }, [done])
+  })
 
   return {}
 }

@@ -15,7 +15,7 @@ const ClientDetailsPage = () => {
         const app = await Mastodon.createApp(makeAPIURL(homeInstance))
         Storage.User.set(`client_id`, app.clientId)
         Storage.User.set(`client_secret`, app.clientSecret)
-        Storage.User.set(`vapid_key`, app.vapidKey)
+        // Storage.User.set(`vapid_key`, app.vapidKey)
       } catch (error){
         console.error(`Something went wrong`, error)
         return

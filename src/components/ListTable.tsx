@@ -19,7 +19,7 @@ const ListTable: React.FC<Props> = ({
             table.getRowModel().rows.map((row) => {
               const rowBackgroundClass = row.getIsSelected() ? `bg-neutral-100` : ``
               return (
-                <tr key={row.id} className={`hover:bg-neutral-200 ${rowBackgroundClass}`}>
+                <tr key={row.id} className={`hover:bg-neutral-200 ${rowBackgroundClass}`} onClick={row.getToggleSelectedHandler()}>
                   {
                     row.getVisibleCells().map(cell => {
                       return (
