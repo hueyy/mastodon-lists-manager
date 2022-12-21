@@ -13,7 +13,7 @@ import Container from "../components/Container"
 const ListsManage = () => {
   const [rowSelection, setRowSelection] = React.useState({})
   const [selectedLists, setSelectedLists] = React.useState([] as string[])
-  const { lists, following, fetchData, isFetching, getLists, lastUpdated } = useListsFollowingData()
+  const { lists, following, fetchData, isFetching, getLists, addToList, lastUpdated } = useListsFollowingData()
   const { apiURL, accessToken } = getRequestEssentials()
 
   const onRedirectDone = React.useCallback(() => {
@@ -36,10 +36,10 @@ const ListsManage = () => {
       return unlistedAccounts[Number.parseInt(key)].id
     })
     await Promise.all(selectedLists.map(listID => Mastodon.addToList(apiURL, accessToken, listID, accountIds)))
-    await fetchData()
+    addToList(selectedLists, accountIds)
     setSelectedLists([])
     setRowSelection({})
-  }, [rowSelection, selectedLists, apiURL, accessToken, fetchData, unlistedAccounts])
+  }, [rowSelection, selectedLists, apiURL, accessToken, unlistedAccounts, addToList])
   
   const onCreateList = React.useCallback(async () => {
     const answer = window.prompt(`What do you want to name your new list`)

@@ -4,23 +4,15 @@ import Storage from "../utils/Storage"
 import { isValidString, makeAPIURL } from "../utils/Utils"
 import Mastodon from '../utils/Mastodon'
 import Container from '../components/Container'
+import useRedirect from '../hooks/useRedirect'
 
 const OAuth = () => {
-  React.useEffect(() => {
+
+  const onRedirectDone = React.useCallback(() => {
     const homeInstance = Storage.User.get(`home_instance`)
-    if(!isValidString(homeInstance)) {
-      navigate(`/set_instance`)
-      return
-    }
-    
+    const apiURL = makeAPIURL(homeInstance)
     const clientID = Storage.User.get(`client_id`)
     const clientSecret = Storage.User.get(`client_secret`)
-    if(!isValidString(clientID) || !isValidString(clientSecret)){
-      navigate(`/client_details`)
-      return
-    }
-
-    const apiURL = makeAPIURL(homeInstance)
    
     if(window.location.search.length > 0){
       const queryParams = new URLSearchParams(window.location.search)
@@ -42,7 +34,9 @@ const OAuth = () => {
       const OAuthURL = Mastodon.makeOAuthURL(apiURL, clientID)
       window.location.href = OAuthURL
     }
-  })
+  }, [])
+
+  useRedirect({ done: onRedirectDone })
 
   return (
     <Container>

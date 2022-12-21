@@ -3,10 +3,10 @@ import { HeadFC, navigate, PageProps } from "gatsby"
 import TextInput from '../components/TextInput'
 import PrimaryButton from "../components/PrimaryButton"
 import Storage from '../utils/Storage'
-import { isValidString } from "../utils/Utils"
 import Container from "../components/Container"
+import useRedirect from "../hooks/useRedirect"
 
-const clean_home_instance_input = (input_str: string) => {
+const cleanHomeInstanceInput = (input_str: string) => {
   const str = /^https?:\/\//.test(input_str)
     ? input_str
     : `https://${input_str}`
@@ -15,23 +15,18 @@ const clean_home_instance_input = (input_str: string) => {
 }
 
 const SetInstancePage: React.FC<PageProps> = () => {
-  const [home_instance, set_home_instance] = React.useState(``)
-  const on_home_instance_change = React.useCallback((data: string) => {
-    set_home_instance(data)
+  const [homeInstance, setHomeInstance] = React.useState(``)
+  const onHomeInstanceChange = React.useCallback((data: string) => {
+    setHomeInstance(data)
   }, [])
-  const save_home_instance = React.useCallback(() => {
-    const input = clean_home_instance_input(home_instance)
-    set_home_instance(input)
+  const saveHomeInstance = React.useCallback(() => {
+    const input = cleanHomeInstanceInput(homeInstance)
+    setHomeInstance(input)
     Storage.User.set(`home_instance`, input)
     navigate(`/client_details`)
-  }, [home_instance])
+  }, [homeInstance])
 
-  React.useEffect(() => {
-    const homeInstance = Storage.User.get(`home_instance`)
-    if(isValidString(homeInstance)){
-      navigate(`/client_details`)
-    }
-  }, [])
+  useRedirect()
 
   return (
     <Container>
@@ -41,11 +36,12 @@ const SetInstancePage: React.FC<PageProps> = () => {
       
       <TextInput
         placeholder="mastodon.social"
-        value={home_instance}
-        onChange={on_home_instance_change}
+        value={homeInstance}
+        onChange={onHomeInstanceChange}
+        onEnter={saveHomeInstance}
       />
       
-      <PrimaryButton onClick={save_home_instance}>SAVE</PrimaryButton>
+      <PrimaryButton onClick={saveHomeInstance}>SAVE</PrimaryButton>
     </Container>
   )
 }

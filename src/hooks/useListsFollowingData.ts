@@ -1,7 +1,7 @@
 import * as React from "react"
 import Storage from "../utils/Storage"
 import { login } from "masto"
-import type { Account, MastoClient, List } from "masto"
+import type { Account, List } from "masto"
 import { getRequestEssentials } from "../utils/Utils"
 
 const toArray = async <T,>(asyncIterator: AsyncIterable<T[]>): Promise<T[]> => { 
@@ -59,7 +59,20 @@ const useListsFollowingData = () => {
     })()
   }, [getLists, getFollowing])
 
+  const addToList = React.useCallback((selectedLists: string[], accountIds: string[]) => {
+    setLists(lists.map(list => {
+      if(selectedLists.includes(list.id)){
+        return { ...list, accounts: [
+          ...list.accounts,
+          ...following.filter(f => accountIds.includes(f.id)),
+        ] }
+      }
+      return list
+    }))
+  }, [lists, following])
+
   return {
+    addToList,
     fetchData,
     following,
     getLists,
