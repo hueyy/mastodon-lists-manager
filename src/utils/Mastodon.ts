@@ -5,7 +5,7 @@ const REDIRECT_URL = `${process.env.HOST}/oauth`
 const SCOPES = `read:accounts read:follows read:lists write:lists write:follows` as const
 
 const createApp = async (apiURL: string): Promise<Client> => {
-  const m = await login({ url: apiURL })
+  const m = await login({ disableVersionCheck: true, url: apiURL })
   return m.apps.create({
     clientName: `mastodon-lists-manager`,
     redirectUris: REDIRECT_URL,
@@ -51,7 +51,7 @@ const codeToAccessToken = async (apiURL: string, clientId: string, clientSecret:
 }
 
 const getClient = async (apiURL: string, accessToken: string) => {
-  return await login({ accessToken, url: apiURL })
+  return await login({ accessToken, disableVersionCheck: true, url: apiURL })
 }
 
 const getLists = async (apiURL: string, accessToken: string): Promise<List[]>=> {
