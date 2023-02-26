@@ -58,6 +58,7 @@ const useListsTable = ({
       account,
     }))
   }, [unlistedAccounts])
+
   const table = useReactTable({
     columns,
     data: tableData,

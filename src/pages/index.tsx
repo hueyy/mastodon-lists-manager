@@ -20,10 +20,13 @@ const IndexPage: React.FC<PageProps> = () => {
         <li>View all the users you follow who are not in lists and add them to lists</li>
         <li>Unfollow multiple users at once</li>
       </ul>
+      <p className="my-2">
+        This should also work on instances that implement the Mastodon follower and list APIs.
+      </p>
 
       <p className="mb-4">
-        Your personal data (including your lists and your access token) is only sent to and fro your Mastodon instance and your browser and stored in your browser's localStorage.&nbsp;
-        No personal data is sent to or stored on my server (in fact, this is a static site so there is no backend to store the data anyway).
+        Your personal data (including your lists and your access token) is only sent to and from your Mastodon instance and your browser and stored in your browser's localStorage.&nbsp;
+        No personal data is sent to or stored on the server hosting this webpage (in fact, this is a static site so there is no backend to process or store the data anyway).
       </p>
 
       <PrimaryButton href="/set_instance">START</PrimaryButton>

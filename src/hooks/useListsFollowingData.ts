@@ -72,7 +72,7 @@ const useListsFollowingData = () => {
       }
       return list
     })
-    setLists(lists)
+    setLists(newLists)
     Storage.User.set(`lists`, newLists)
   }, [lists, following])
 
